@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jalal Faraji — Academic Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1565C0;
+    --primary-light: #E3F2FD;
+    --accent: #00897B;
+    --bg: #F5F7FA;
+    --surface: #FFFFFF;
+    --text: #1A1A2E;
+    --text-secondary: #555;
+    --text-muted: #999;
+    --border: #E0E6EF;
+    --nav-bg: #1A237E;
+    --nav-height: 56px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; }
+
+  nav {
+    background: var(--nav-bg);
+    height: var(--nav-height);
+    display: flex; align-items: center; justify-content: center;
+    gap: 4px; padding: 0 1rem;
+    position: sticky; top: 0; z-index: 100;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    background: transparent; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.65); font-size: 0.8rem; font-weight: 500;
+    padding: 7px 13px; border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px; transition: all 0.18s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+  .nav-btn.active { background: rgba(255,255,255,0.18); color: white; }
+
+  /* HOME */
+  #home-view {
+    min-height: calc(100vh - var(--nav-height));
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0D47A1 0%, #1565C0 55%, #00695C 100%);
+    padding: 3rem 2rem;
+  }
+  .hero-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 3rem 3.5rem;
+    max-width: 860px; width: 100%;
+    display: grid; grid-template-columns: auto 1fr; gap: 3rem;
+    align-items: start; color: white;
+  }
+  .avatar {
+    width: 140px; height: 140px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 3px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; font-weight: 700; flex-shrink: 0; color: white;
+    overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-name { font-size: 2rem; font-weight: 700; margin-bottom: 5px; }
+  .hero-role { font-size: 0.95rem; opacity: 0.8; margin-bottom: 3px; }
+  .hero-affil { font-size: 0.85rem; opacity: 0.65; margin-bottom: 1.2rem; }
+  .hero-links { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .hero-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28);
+    color: white; text-decoration: none; padding: 5px 12px;
+    border-radius: 20px; font-size: 0.78rem; font-weight: 500; transition: all 0.2s;
+  }
+  .hero-link:hover { background: rgba(255,255,255,0.22); }
+  .interests-label { font-size: 0.72rem; letter-spacing: 1px; opacity: 0.6; text-transform: uppercase; margin-bottom: 7px; }
+  .interest-chip {
+    display: inline-block; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: rgba(255,255,255,0.9); padding: 3px 10px;
+    border-radius: 12px; font-size: 0.75rem; margin: 2px 3px 2px 0;
+  }
+  .quick-nav {
+    margin-top: 1.8rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  .qnav-btn {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22);
+    color: white; border-radius: 10px; padding: 10px 8px;
+    font-size: 0.78rem; font-weight: 500; cursor: pointer;
+    text-align: center; transition: all 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .qnav-btn:hover { background: rgba(255,255,255,0.22); }
+  .qnav-btn .qicon { font-size: 1.2rem; display: block; margin-bottom: 3px; }
+
+  /* VIEWS */
+  .view { display: none; min-height: calc(100vh - var(--nav-height)); padding: 2.5rem 0; }
+  .view.active { display: block; }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 2rem; }
+  .page-header { margin-bottom: 2rem; }
+  .page-title {
+    font-size: 1.6rem; font-weight: 700; color: var(--primary);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .page-title::after {
+    content: ''; flex: 1; height: 2px;
+    background: linear-gradient(to right, var(--primary), transparent);
+    border-radius: 1px;
+  }
+
+  /* RESUME TABS */
+  .resume-tabs { display: flex; gap: 6px; margin-bottom: 1.8rem; flex-wrap: wrap; }
+  .rtab {
+    padding: 7px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 500;
+    border: 1.5px solid var(--border); background: var(--surface); cursor: pointer;
+    color: var(--text-secondary); font-family: 'Inter', sans-serif; transition: all 0.18s;
+  }
+  .rtab.active { background: var(--primary); border-color: var(--primary); color: white; }
+  .rtab-panel { display: none; }
+  .rtab-panel.active { display: block; }
+
+  /* TIMELINE */
+  .timeline { padding-left: 1.6rem; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, var(--primary), var(--accent)); }
+  .tl-item { position: relative; margin-bottom: 1.8rem; }
+  .tl-dot { position: absolute; left: -1.6rem; top: 5px; width: 14px; height: 14px; border-radius: 50%; background: var(--primary); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--primary); }
+  .tl-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.3rem; }
+  .tl-role { font-weight: 600; font-size: 0.95rem; }
+  .tl-org { color: var(--primary); font-size: 0.84rem; font-weight: 500; margin: 2px 0; }
+  .tl-date { color: var(--text-muted); font-size: 0.78rem; margin-bottom: 7px; }
+  .tl-bullets { list-style: none; }
+  .tl-bullets li { color: var(--text-secondary); font-size: 0.85rem; padding: 2px 0 2px 1rem; position: relative; line-height: 1.65; }
+  .tl-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.72rem; top: 5px; }
+
+  /* EDU */
+  .edu-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .edu-icon { width: 42px; height: 42px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .edu-degree { font-weight: 600; font-size: 0.95rem; }
+  .edu-uni { color: var(--primary); font-size: 0.84rem; font-weight: 500; margin: 2px 0; }
+  .edu-meta { color: var(--text-muted); font-size: 0.78rem; margin-bottom: 5px; }
+  .edu-desc { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65; }
+  .edu-highlights { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .edu-badge { background: var(--primary-light); color: var(--primary); padding: 3px 9px; border-radius: 10px; font-size: 0.74rem; font-weight: 500; }
+
+  /* PUBLICATIONS */
+  .pub-filter { display: flex; gap: 6px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .pfbtn {
+    padding: 5px 14px; border-radius: 16px; font-size: 0.78rem; font-weight: 500;
+    border: 1.5px solid var(--border); background: var(--surface); cursor: pointer;
+    color: var(--text-secondary); font-family: 'Inter', sans-serif; transition: all 0.18s;
+  }
+  .pfbtn.active { background: var(--primary); border-color: var(--primary); color: white; }
+  .pub-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 4px solid var(--primary); border-radius: 0 12px 12px 0;
+    padding: 1.1rem 1.3rem; margin-bottom: 0.9rem; transition: box-shadow 0.2s;
+  }
+  .pub-card:hover { box-shadow: 0 4px 16px rgba(21,101,192,0.1); }
+  .pub-card[data-type="conference"] { border-left-color: var(--accent); }
+  .pub-card[data-type="review"] { border-left-color: #9E9E9E; background: #FAFAFA; }
+  .pub-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 4px; line-height: 1.4; }
+  .pub-authors { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 3px; }
+  .pub-venue { font-size: 0.82rem; color: var(--accent); font-style: italic; margin-bottom: 7px; }
+  .pub-card[data-type="review"] .pub-venue { color: #757575; }
+  .pub-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+  .tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag { padding: 2px 9px; border-radius: 10px; font-size: 0.72rem; font-weight: 500; }
+  .tag-blue { background: #E3F2FD; color: #1565C0; }
+  .tag-green { background: #E8F5E9; color: #2E7D32; }
+  .tag-orange { background: #FFF3E0; color: #E65100; }
+  .tag-grey { background: #F5F5F5; color: #616161; }
+  .cite-badge { font-size: 0.74rem; color: var(--text-muted); background: #F5F5F5; padding: 2px 8px; border-radius: 8px; }
+  .doi-link { font-size: 0.76rem; color: var(--primary); text-decoration: none; }
+  .doi-link:hover { text-decoration: underline; }
+
+  /* PROJECTS */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.1rem; }
+  .proj-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; transition: all 0.2s; }
+  .proj-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .proj-icon { font-size: 1.7rem; margin-bottom: 7px; }
+  .proj-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; }
+  .proj-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .proj-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+  .skill-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem; }
+  .skill-card h4 { font-size: 0.8rem; color: var(--primary); font-weight: 600; margin-bottom: 0.7rem; }
+  .sk { display: flex; align-items: center; gap: 7px; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 5px; }
+  .sk::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  /* AWARDS */
+  .award-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.3rem; margin-bottom: 0.9rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .award-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .award-title { font-weight: 600; font-size: 0.93rem; }
+  .award-body { font-size: 0.83rem; color: var(--text-secondary); margin-top: 3px; line-height: 1.55; }
+  .award-meta { font-size: 0.77rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* CONTACT */
+  .contact-wrapper { max-width: 640px; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem; display: flex; gap: 0.9rem; align-items: center; }
+  .cc-icon { width: 40px; height: 40px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .cc-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 2px; }
+  .cc-value { font-size: 0.87rem; font-weight: 500; }
+  .cc-value a { color: var(--primary); text-decoration: none; }
+
+  /* SECTION DIVIDER */
+  .section-label { font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--primary); font-weight: 600; margin: 1.5rem 0 0.8rem; }
+
+  /* ═══ MODAL / POPUP ═══ */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(10,20,50,0.55);
+    z-index: 2000; display: none; align-items: center; justify-content: center;
+    padding: 1.5rem; backdrop-filter: blur(3px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white; border-radius: 18px; padding: 2rem 2.2rem;
+    max-width: 580px; width: 100%; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    animation: modalIn 0.22s cubic-bezier(.32,.72,0,1);
+    max-height: 85vh; overflow-y: auto;
+  }
+  @keyframes modalIn { from { transform: translateY(20px) scale(0.97); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: #f0f4f8; border: none; border-radius: 50%;
+    width: 34px; height: 34px; cursor: pointer; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+  }
+  .modal-close:hover { background: #e0e6ef; }
+  .modal-category { font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; color: var(--accent); margin-bottom: 0.5rem; }
+  .modal-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 0.9rem; line-height: 1.35; }
+  .modal-body { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.8; }
+  .modal-body p { margin-bottom: 0.75rem; }
+  .modal-body strong { color: var(--text); }
+  .modal-body .kw { display: inline-block; background: #E3F2FD; color: #1565C0; padding: 1px 7px; border-radius: 8px; font-size: 0.78rem; font-weight: 500; margin: 1px 2px; }
+  .modal-body .ref { font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem; padding-top: 0.7rem; border-top: 1px solid var(--border); font-style: italic; }
+  .modal-imgs { display: flex; gap: 8px; margin: 1rem 0; flex-wrap: wrap; }
+  .modal-img-placeholder { flex: 1; min-width: 140px; height: 100px; background: var(--primary-light); border: 2px dashed var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--primary); text-align: center; padding: 0.5rem; }
+  .modal-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 1rem; }
+
+  /* Clickable interest chips */
+  .interest-chip { cursor: pointer; transition: all 0.18s; }
+  .interest-chip:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+  /* Expandable project cards */
+  .proj-card { cursor: pointer; }
+  .proj-more { margin-top: 8px; font-size: 0.75rem; color: var(--primary); font-weight: 500; display: flex; align-items: center; gap: 3px; }
+
+  @media (max-width: 700px) {
+    .hero-card { grid-template-columns: 1fr; text-align: center; padding: 2rem 1.5rem; }
+    .hero-links { justify-content: center; }
+    .quick-nav { grid-template-columns: repeat(2,1fr); }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <button class="nav-btn active" onclick="show('home')">Home</button>
+  <button class="nav-btn" onclick="show('resume')">Resume</button>
+  <button class="nav-btn" onclick="show('projects')">Projects</button>
+  <button class="nav-btn" onclick="show('publications')">Publications</button>
+  <button class="nav-btn" onclick="show('awards')">Awards</button>
+  <button class="nav-btn" onclick="show('teaching')">Teaching</button>
+  <button class="nav-btn" onclick="show('contact')">Contact</button>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="home-view" class="view active">
+  <div style="min-height:calc(100vh - 56px); display:flex; align-items:center; padding: 2rem;">
+    <div class="hero-card" style="margin: 0 auto;">
+      <div class="avatar">JF</div>
+      <div>
+        <div class="hero-name">Jalal Faraji</div>
+        <div class="hero-role">PhD Researcher · Power Systems &amp; Demand-Side Flexibility</div>
+        <div class="hero-affil">University College Cork · MaREI Research Centre · ERBE CDT · Cork, Ireland</div>
+        <div class="hero-links">
+          <a class="hero-link" href="https://www.linkedin.com/in/jalal-faraji" target="_blank">🔗 LinkedIn</a>
+          <a class="hero-link" href="https://scholar.google.com/citations?user=xF0SwTIAAAAJ" target="_blank">📚 Google Scholar</a>
+          <a class="hero-link" href="https://www.marei.ie/people/jalal-faraji/" target="_blank">🏛️ MaREI Profile</a>
+          <a class="hero-link" href="https://erbecdt.ac.uk/people/profiles/?smid=1321" target="_blank">🎓 ERBE CDT</a>
+          <a class="hero-link" href="https://github.com/JalalFaraji" target="_blank">💻 GitHub</a>
+          <a class="hero-link" href="mailto:jalal.faraji@ucc.ie">✉️ Email</a>
+        </div>
+        <div class="interests-label">Research Interests <span style="font-size:0.65rem;opacity:0.6;letter-spacing:0;text-transform:none;font-weight:400;">— click any topic to learn more</span></div>
+        <div>
+          <span class="interest-chip" onclick="openInterest('Demand Response')">Demand Response</span>
+          <span class="interest-chip" onclick="openInterest('Demand-Side Flexibility')">Demand-Side Flexibility</span>
+          <span class="interest-chip" onclick="openInterest('Smart Grids')">Smart Grids</span>
+          <span class="interest-chip" onclick="openInterest('Net-Load Forecasting')">Net-Load Forecasting</span>
+          <span class="interest-chip" onclick="openInterest('Nonlinear Dynamics')">Nonlinear Dynamics</span>
+          <span class="interest-chip" onclick="openInterest('Battery Storage')">Battery Storage</span>
+          <span class="interest-chip" onclick="openInterest('Renewable Integration')">Renewable Integration</span>
+          <span class="interest-chip" onclick="openInterest('Solar PV Systems')">Solar PV Systems</span>
+        </div>
+        <div class="quick-nav">
+          <button class="qnav-btn" onclick="show('resume')"><span class="qicon">📄</span>Resume</button>
+          <button class="qnav-btn" onclick="show('publications')"><span class="qicon">📚</span>Publications</button>
+          <button class="qnav-btn" onclick="show('projects')"><span class="qicon">🔬</span>Projects</button>
+          <button class="qnav-btn" onclick="show('contact')"><span class="qicon">✉️</span>Contact</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESUME ══ -->
+<div id="resume-view" class="view">
+  <div class="container">
+    <div class="page-header"><div class="page-title">📄 Resume</div></div>
+    <div class="resume-tabs">
+      <button class="rtab active" onclick="showTab('edu')">Education</button>
+      <button class="rtab" onclick="showTab('exp')">Experience</button>
+      <button class="rtab" onclick="showTab('skills')">Skills</button>
+    </div>
+
+    <!-- EDUCATION -->
+    <div id="edu-panel" class="rtab-panel active">
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div style="flex:1">
+          <div class="edu-degree">PhD in Electrical Engineering</div>
+          <div class="edu-uni">University College Cork · Cork, Ireland</div>
+          <div class="edu-meta">Oct 2022 – April 2027 (expected) · ERBE CDT &amp; MaREI Centre</div>
+          <div class="edu-desc">
+            Research: Data-driven characterisation and forecasting of post-demand-response rebound and residential demand-side flexibility. Empirical datasets: StoreNet residential battery trial (Dingle, Co. Kerry) and Pecan Street Dataport (Austin, TX). Supervisor: Dr Barry P. Hayes.
+          </div>
+          <div class="section-label" style="margin-top:0.9rem;">Research Outputs</div>
+          <ul class="tl-bullets" style="margin-top:0;">
+            <li><strong>IEEE TSG 2026</strong> — Chaos-Theoretic Characterisation of Post-Demand Response Rebound in Aggregated HVAC Systems</li>
+            <li><strong>UPEC IEEE 2025</strong> — Enhanced Net-Load Prediction Using a Hybrid Deep-Learning Model with Peak-Aware Uncertainty Estimation at a Local Community Level</li>
+            <li><strong>CIRED 2027</strong> — Forewarning DSOs of Synchronised Charging Peaks in Residential Batteries</li>
+            <li><strong>IEEE TSG</strong> <em>(Under Review)</em> — Phantom Rebound: Conventional Baselines Manufacture Post-Event Recovery in Demand Response</li>
+            <li><strong>IEEE TSG</strong> <em>(Under Review)</em> — Avoiding Synchronised Charging Peaks in Residential Batteries Without Learning or Coordination</li>
+            <li><strong>IEEE TSG</strong> <em>(Under Review)</em> — Apparent Multifractality and Long-Range Memory in Post-DR Rebound: A Surrogate- and Placebo-Controlled Audit</li>
+            <li><strong>Energy Reports</strong> <em>(Under Review)</em> — Artificial Intelligence Approaches for Household Energy Appliance Modelling: A Comprehensive Review</li>
+          </ul>
+          <div class="edu-highlights" style="margin-top:0.8rem;">
+            <span class="edu-badge">🏆 ERBE CDT Fellow</span>
+            <span class="edu-badge">🌊 MaREI Researcher</span>
+            <span class="edu-badge">📄 11 Publications</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div style="flex:1">
+          <div class="edu-degree">MSc in Nuclear Engineering</div>
+          <div class="edu-uni">Shahid Beheshti University · Tehran, Iran</div>
+          <div class="edu-meta">2013 – 2015 · GPA: 18.25 / 20 · Top 5% of cohort</div>
+          <div class="edu-desc">
+            Thesis: Dynamic modelling of electrical network equipment for near-zero-energy buildings. Investigated power-flow, grid-integration challenges, and energy management for distributed generation.
+            Authored the <em>Engineering Electromagnetics</em> textbook in Persian (and several other technical books in Persian).
+            Served as Teaching Assistant for Engineering Electromagnetics (1 semester).
+          </div>
+          <div class="edu-highlights">
+            <span class="edu-badge">📗 Author: Engineering EM Textbook</span>
+            <span class="edu-badge">🏅 Top 5%</span>
+            <span class="edu-badge">🧑‍🏫 TA: Electromagnetics</span>
+            <span class="edu-badge">🖥️ SCADA Systems (coursework)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div style="flex:1">
+          <div class="edu-degree">BSc in Electrical &amp; Power Engineering</div>
+          <div class="edu-uni">Bu-Ali Sina University · Hamedan, Iran</div>
+          <div class="edu-meta">Feb 2008 – Sep 2012 · GPA: 19 / 20 · Ranked 1st in cohort</div>
+          <div class="edu-desc">
+            Graduated top of the cohort (Grade A). Final-year project: <em>Optimal Placement of Electric Vehicle Charging Stations in a Real Iranian Distribution Network</em> — comprehensive study covering power flow analysis, V2G (vehicle-to-grid) capability, fault impact assessment on network voltage profiles, power quality, and load balancing optimisation.
+            Served as Teaching Assistant for 7 semesters covering Electromagnetics, Linear Control, Engineering Mathematics, and related courses. Completed an industrial PLC programming course (Siemens/LOGO!) during this period.
+          </div>
+          <div class="edu-highlights">
+            <span class="edu-badge">🥇 Ranked 1st in Cohort</span>
+            <span class="edu-badge">🏆 17th — National EE Olympiad</span>
+            <span class="edu-badge">🧑‍🏫 TA × 7 Semesters</span>
+            <span class="edu-badge">🔌 Industrial PLC Certificate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div id="exp-panel" class="rtab-panel">
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-role">PhD Researcher — Demand Response &amp; Flexibility</div>
+            <div class="tl-org">University College Cork / MaREI · Cork, Ireland</div>
+            <div class="tl-date">Oct 2022 – Present · 4+ years</div>
+            <ul class="tl-bullets">
+              <li>Python-based analytical workflows for residential smart-meter data to quantify electricity demand, demand-side flexibility, and DR effects.</li>
+              <li>Community-level net-load forecasts with peak-aware uncertainty estimation under high renewable penetration (hybrid CNN-BiLSTM-KDE model).</li>
+              <li>Chaos-theoretic analysis (Lyapunov exponents, recurrence quantification analysis) of nonlinear post-DR rebound dynamics in aggregated HVAC systems.</li>
+              <li>Early-warning methods for DSOs to forearm against synchronised charging peaks in residential battery systems (StoreNet dataset).</li>
+              <li>Peer-reviewed publications in IEEE TSG, UPEC IEEE, and CIRED. Teaching support for undergraduate/postgraduate students.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-role">Research &amp; Development Engineer — OT / ICS</div>
+            <div class="tl-org">Niroo Research Institute (NRI) · Tehran, Iran</div>
+            <div class="tl-date">2016 – 2022 · 6 years</div>
+            <ul class="tl-bullets">
+              <li>Delivered SCADA-based data acquisition and remote monitoring for distributed energy assets on the NRI campus; configured historian servers, RTUs, and HMI interfaces.</li>
+              <li>Specified and procured ICS/OT equipment — PLCs (Siemens S7), sensor networks, and SCADA software — for three smart-infrastructure projects over a 6-year period.</li>
+              <li>Defined reference architectures and functional specifications for OT networks integrated with SCADA platforms at two research facilities.</li>
+              <li>Applied cybersecurity-aware practices in OT environments, including network segmentation consistent with IEC 62443 / defence-in-depth principles.</li>
+              <li>Co-authored technical reports for the Ministry of Energy on SCADA integration, demand-side management, and national grid modernisation feasibility.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-role">Lecturer — Electrical Engineering</div>
+            <div class="tl-org">Technical &amp; Vocational University (TVU) · Hamedan, Iran</div>
+            <div class="tl-date">2014 – 2017 · Part-time</div>
+            <ul class="tl-bullets">
+              <li>Taught Engineering Electromagnetics, Engineering Mathematics, Electric Machines 1 &amp; 2, Linear Control, Linear Control Lab, Electric Circuits 1 &amp; 2.</li>
+              <li>Leveraged MATLAB and Simulink for hands-on project-based learning; mentored over 100 students.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-role">Lecturer &amp; Exam Design Manager</div>
+            <div class="tl-org">Parseh Educational Institute · Iran</div>
+            <div class="tl-date">~2013 – 2015</div>
+            <ul class="tl-bullets">
+              <li>Delivered lectures on Engineering Electromagnetics for exam-preparation courses.</li>
+              <li>Authored official electromagnetics questions for Iran's national PhD entrance exam (electrical engineering — field communications track) submitted to Sanjesh.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-role">Co-Founder &amp; CEO</div>
+            <div class="tl-org">Arya Co. · Tehran, Iran</div>
+            <div class="tl-date">2014 – 2015</div>
+            <ul class="tl-bullets">
+              <li>Founded an energy-technology startup focused on innovative energy management solutions for industrial and residential applications.</li>
+              <li>Led cross-functional team (engineers and developers), overseeing project planning, product development, and strategic partnerships.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-role">Mobile Technology Entrepreneur &amp; Trainer</div>
+            <div class="tl-org">Self-employed · Iran</div>
+            <div class="tl-date">2016 – 2021 · ~5 years</div>
+            <ul class="tl-bullets">
+              <li>Established and operated a mobile device repair business (Android and iOS hardware/software).</li>
+              <li>Delivered mobile repair training courses at private technical institutes for 2 years.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div id="skills-panel" class="rtab-panel">
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h4>⚡ Power Systems</h4>
+          <div class="sk">Power-system analysis &amp; modelling</div>
+          <div class="sk">Distributed generation</div>
+          <div class="sk">Renewable energy integration</div>
+          <div class="sk">Smart grids &amp; smart cities</div>
+          <div class="sk">Demand response &amp; DSM</div>
+          <div class="sk">Battery / BESS systems</div>
+          <div class="sk">Solar PV systems (MPPT)</div>
+        </div>
+        <div class="skill-card">
+          <h4>🛠️ Modelling Tools</h4>
+          <div class="sk">DIgSILENT PowerFactory</div>
+          <div class="sk">PSCAD</div>
+          <div class="sk">PowerWorld</div>
+          <div class="sk">MATLAB / Simulink</div>
+          <div class="sk">HOMER Pro</div>
+        </div>
+        <div class="skill-card">
+          <h4>💻 Programming &amp; Data</h4>
+          <div class="sk">Python (advanced)</div>
+          <div class="sk">pandas, NumPy, SciPy</div>
+          <div class="sk">scikit-learn, TensorFlow / Keras</div>
+          <div class="sk">CNN, BiLSTM, MC Dropout, KDE</div>
+          <div class="sk">Time-series forecasting</div>
+          <div class="sk">Git / version control</div>
+        </div>
+        <div class="skill-card">
+          <h4>🔌 Electrical &amp; Controls</h4>
+          <div class="sk">Industrial PLC (Siemens S7, LOGO!)</div>
+          <div class="sk">Control systems</div>
+          <div class="sk">Electronic circuits</div>
+          <div class="sk">Electric machines</div>
+          <div class="sk">Electromagnetics</div>
+        </div>
+        <div class="skill-card">
+          <h4>🛡️ OT / ICS &amp; SCADA</h4>
+          <div class="sk">SCADA data acquisition &amp; HMI</div>
+          <div class="sk">Historian servers &amp; RTUs</div>
+          <div class="sk">ICS/OT network architectures</div>
+          <div class="sk">IEC 62443 / defence-in-depth</div>
+          <div class="sk">OT equipment procurement</div>
+          <div class="sk">NIS2 / cybersecurity awareness</div>
+        </div>
+        <div class="skill-card">
+          <h4>🌐 Languages</h4>
+          <div class="sk">Persian (native)</div>
+          <div class="sk">English (professional working)</div>
+          <div class="sk">Kurdish (native)</div>
+          <div class="sk">Turkish (native)</div>
+          <div class="sk">Luri (native)</div>
+        </div>
+        <div class="skill-card">
+          <h4>📚 Academic</h4>
+          <div class="sk">Textbook authoring (Persian)</div>
+          <div class="sk">Exam design (Sanjesh)</div>
+          <div class="sk">Teaching &amp; curriculum development</div>
+          <div class="sk">Research methodology</div>
+          <div class="sk">Peer-reviewed publications</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ PROJECTS ══ -->
+<div id="projects-view" class="view">
+  <div class="container">
+    <div class="page-header"><div class="page-title">🔬 Projects</div></div>
+    <div class="projects-grid">
+      <div class="proj-card" onclick="openProject('netload')">
+        <div class="proj-icon">📊</div>
+        <div class="proj-title">Community Net-Load Forecasting</div>
+        <div class="proj-desc">Hybrid deep-learning model (CNN–BiLSTM–MC Dropout–KDE) with peak-aware uncertainty estimation for community-level electricity demand under high renewable penetration.</div>
+        <div class="proj-meta">UCC / PhD · 2022–Present</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">Python</span><span class="tag tag-green">Deep Learning</span><span class="tag tag-orange">Time Series</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('chaos')">
+        <div class="proj-icon">🔁</div>
+        <div class="proj-title">Chaos-Theoretic DR Rebound Analysis</div>
+        <div class="proj-desc">Applied Lyapunov exponents and recurrence quantification analysis to characterise nonlinear post-DR rebound dynamics in aggregated HVAC systems. Published IEEE TSG 2026.</div>
+        <div class="proj-meta">UCC / PhD · 2023–2026</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">Chaos Theory</span><span class="tag tag-green">Python</span><span class="tag tag-orange">IEEE TSG</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('storenet')">
+        <div class="proj-icon">🔋</div>
+        <div class="proj-title">Early Warning — Synchronised Battery Peaks</div>
+        <div class="proj-desc">Early-warning framework to forearm DSOs against synchronised charging peaks in residential battery systems. Based on StoreNet trial, Dingle, Co. Kerry.</div>
+        <div class="proj-meta">UCC / PhD · 2024–2027</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">Battery Storage</span><span class="tag tag-green">DSO</span><span class="tag tag-orange">CIRED</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('tracker')">
+        <div class="proj-icon">☀️</div>
+        <div class="proj-title">Dual-Axis Solar Tracker — P&amp;O + Neural Network</div>
+        <div class="proj-desc">Design and implementation of a fast-accurate dual-axis solar tracker controlled by modified P&amp;O MPPT combined with MLP neural network optimisation. Published IEEE EEEIC 2020 (9 citations).</div>
+        <div class="proj-meta">Pre-PhD · 2019–2020</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">MPPT</span><span class="tag tag-green">Solar PV</span><span class="tag tag-orange">Neural Network</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('gmppt')">
+        <div class="proj-icon">🌞</div>
+        <div class="proj-title">Global MPPT for PV Systems (FOA)</div>
+        <div class="proj-desc">Novel following-optimisation algorithm (FOA) for tracking the global maximum power point in partially shaded PV systems. Published ITES 2021 (5 citations).</div>
+        <div class="proj-meta">Pre-PhD · 2020–2021</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">GMPPT</span><span class="tag tag-green">Optimisation</span><span class="tag tag-orange">MATLAB</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('ev')">
+        <div class="proj-icon">🚗</div>
+        <div class="proj-title">EV Charging Station Placement (BSc)</div>
+        <div class="proj-desc">Optimal siting and sizing of electric vehicle charging stations in a real Iranian distribution network. Covered power flow, V2G integration, fault impact, voltage profiles, and load balancing.</div>
+        <div class="proj-meta">Bu-Ali Sina Univ. · 2011–2012</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">EV / V2G</span><span class="tag tag-green">Distribution Network</span><span class="tag tag-orange">BSc Thesis</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('smartcity')">
+        <div class="proj-icon">🏙️</div>
+        <div class="proj-title">Smart Energy City — NRI</div>
+        <div class="proj-desc">Led design of a pilot smart energy campus at NRI. Directed national smart-grid studies including Hormuz Island energy planning, smart hospital, smart residential complex, and smart energy park.</div>
+        <div class="proj-meta">NRI · 2013–2016</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">Smart Grid</span><span class="tag tag-green">Smart City</span><span class="tag tag-orange">Feasibility</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+      <div class="proj-card" onclick="openProject('dgmodel')">
+        <div class="proj-icon">🏗️</div>
+        <div class="proj-title">Dynamic Modelling of DG Equipment (MSc)</div>
+        <div class="proj-desc">Dynamic modelling of distributed generation equipment for near-zero-energy buildings. Power-flow analysis and energy management strategies for grid integration of residential DG systems.</div>
+        <div class="proj-meta">Shahid Beheshti Univ. · 2013–2015</div>
+        <div class="tags" style="margin-top:7px;"><span class="tag tag-blue">MATLAB/Simulink</span><span class="tag tag-green">Distributed Gen.</span><span class="tag tag-orange">MSc Thesis</span></div>
+        <div class="proj-more">📖 Read more →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PUBLICATIONS ══ -->
+<div id="publications-view" class="view">
+  <div class="container">
+    <div class="page-header"><div class="page-title">📚 Publications</div></div>
+    <div class="pub-filter">
+      <button class="pfbtn active" onclick="filterPubs('all',this)">All</button>
+      <button class="pfbtn" onclick="filterPubs('journal',this)">Journal</button>
+      <button class="pfbtn" onclick="filterPubs('conference',this)">Conference</button>
+      <button class="pfbtn" onclick="filterPubs('review',this)">Under Review</button>
+    </div>
+
+    <div class="section-label">PhD — University College Cork (2022–Present)</div>
+
+    <div class="pub-card" data-type="review">
+      <div class="pub-title">Avoiding Synchronised Charging Peaks in Residential Batteries Without Learning or Coordination</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">IEEE Transactions on Smart Grid — Under Review</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-grey">Under Review</span><span class="tag tag-blue">Battery Storage</span><span class="tag tag-orange">IEEE TSG</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="review">
+      <div class="pub-title">Phantom Rebound: Conventional Baselines Manufacture Post-Event Recovery in Demand Response</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">IEEE Transactions on Smart Grid — Under Review</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-grey">Under Review</span><span class="tag tag-green">Demand Response</span><span class="tag tag-orange">IEEE TSG</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="review">
+      <div class="pub-title">Apparent Multifractality and Long-Range Memory in Post-DR Rebound: A Surrogate- and Placebo-Controlled Audit</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">IEEE Transactions on Smart Grid — Under Review</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-grey">Under Review</span><span class="tag tag-blue">Nonlinear Dynamics</span><span class="tag tag-orange">IEEE TSG</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="review">
+      <div class="pub-title">Artificial Intelligence Approaches for Household Energy Appliance Modelling: A Comprehensive Review</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">Elsevier (Energy Reports) — Under Review</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-grey">Under Review</span><span class="tag tag-green">AI / ML</span><span class="tag tag-orange">Review Article</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="conference">
+      <div class="pub-title">Forewarning DSOs of Synchronised Charging Peaks in Residential Batteries</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">CIRED Conference, 2027</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-green">Conference</span><span class="tag tag-blue">Battery Storage</span><span class="tag tag-orange">DSO / Grid</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="journal">
+      <div class="pub-title">Chaos-Theoretic Characterisation of Post-Demand Response Rebound in Aggregated HVAC Systems</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">IEEE Transactions on Smart Grid, 2026</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-blue">Journal</span><span class="tag tag-green">Chaos Theory</span><span class="tag tag-orange">Demand Response</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="conference">
+      <div class="pub-title">Enhanced Net-Load Prediction Using a Hybrid Deep-Learning Model with Peak-Aware Uncertainty Estimation at a Local Community Level</div>
+      <div class="pub-authors">J. Faraji &amp; B. P. Hayes</div>
+      <div class="pub-venue">60th International Universities Power Engineering Conference (UPEC), IEEE · London, UK · Sep 2025</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-green">Conference</span><span class="tag tag-blue">Deep Learning</span><span class="tag tag-orange">Forecasting</span></div>
+        <a href="https://doi.org/10.1109/UPEC65436.2025.11279798" target="_blank" class="doi-link">DOI ↗</a>
+      </div>
+    </div>
+
+    <div class="section-label">Pre-PhD (2015–2023)</div>
+
+    <div class="pub-card" data-type="journal">
+      <div class="pub-title">A Modified Bat Algorithm to Track Global Maximum Power Point in PV Arrays Under Partial Shading Conditions</div>
+      <div class="pub-authors">J. Faraji, M. Taherkhani, E. Aliyan, M. Khanjanianpak, M. I. Ghiyasi</div>
+      <div class="pub-venue">International Transactions on Electrical Energy Systems · 2019 · ITEES-19-1409</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-blue">Journal</span><span class="tag tag-green">PV / MPPT</span><span class="tag tag-orange">Metaheuristic</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="conference">
+      <div class="pub-title">Design and Implementation of Dual Axis Solar Tracker System Based on the Modified P&amp;O Technique and MLP Neural Network Optimisation</div>
+      <div class="pub-authors">H. Arasteh, J. Faraji, M. Rezaei, M. Kia</div>
+      <div class="pub-venue">7th International Researches in Science &amp; Engineering &amp; 4th International Congress on Civil, Architecture and Urbanism in Asia · Kasem Bundit University, Bangkok, Thailand · Feb 2023</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-green">Conference</span><span class="tag tag-blue">Solar PV</span><span class="tag tag-orange">MPPT</span></div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="journal">
+      <div class="pub-title">A GMPPT Design Using the Following Optimisation Algorithm for PV Systems</div>
+      <div class="pub-authors">M. Taherkhani, J. Faraji, M. Khanjanianpak, E. Aliyan, M. I. Ghiyasi</div>
+      <div class="pub-venue">International Transactions on Electrical Energy Systems · May 2021</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-blue">Journal</span><span class="tag tag-green">PV / MPPT</span><span class="tag tag-orange">Optimisation</span></div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="cite-badge">📌 5 citations</span>
+          <a href="https://doi.org/10.1002/2050-7038.12794" target="_blank" class="doi-link">DOI ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="conference">
+      <div class="pub-title">Fast-Accurate Dual-Axis Solar Tracker Controlled by P&amp;O Technique with Neural Network Optimisation</div>
+      <div class="pub-authors">J. Faraji, M. Khanjanianpak, M. Rezaei, M. Kia, E. Aliyan, P. Dehghanian</div>
+      <div class="pub-venue">IEEE EEEIC / ICPS Europe · Madrid, Spain · June 2020</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-green">Conference</span><span class="tag tag-blue">Solar Tracker</span><span class="tag tag-orange">Neural Network</span></div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="cite-badge">📌 9 citations</span>
+          <a href="https://doi.org/10.1109/EEEIC/ICPSEurope49358.2020.9160843" target="_blank" class="doi-link">DOI ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pub-card" data-type="journal">
+      <div class="pub-title">Design Basics for Shelter After Disaster with Focus on Production and Consumption of Energy in Smart Cities — Case Study: Bushehr</div>
+      <div class="pub-authors">H. Gamini Esfahani &amp; J. Faraji</div>
+      <div class="pub-venue">Disaster Prevention and Management Knowledge · Vol. 5(3), pp. 186–201 · 2015</div>
+      <div class="pub-row">
+        <div class="tags"><span class="tag tag-blue">Journal</span><span class="tag tag-green">Smart City</span><span class="tag tag-orange">Energy Management</span></div>
+        <a href="https://dpmk.ir/article-1-44-en.html" target="_blank" class="doi-link">Full text ↗</a>
+      </div>
+    </div>
+
+    <p style="margin-top:1.2rem; font-size:0.84rem; color:var(--text-muted);">
+      Total: <strong>18+ publications</strong> · Full list on
+      <a href="https://scholar.google.com/citations?user=xF0SwTIAAAAJ" target="_blank" style="color:var(--primary);">Google Scholar ↗</a> and
+      <a href="https://www.linkedin.com/in/jalal-faraji" target="_blank" style="color:var(--primary);">LinkedIn ↗</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══ AWARDS ══ -->
+<div id="awards-view" class="view">
+  <div class="container">
+    <div class="page-header"><div class="page-title">🏆 Awards &amp; Honours</div></div>
+
+    <!-- ACADEMIC JOURNEY VISUAL TIMELINE -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.6rem; margin-bottom:1.8rem; overflow:hidden;">
+      <div style="font-size:0.72rem; letter-spacing:1px; text-transform:uppercase; color:var(--primary); font-weight:600; margin-bottom:1.2rem;">Academic Journey</div>
+      <div style="position:relative; padding-bottom:2.8rem;">
+        <div style="position:absolute; top:9px; left:7%; right:7%; height:3px; background:linear-gradient(to right, #1565C0 0%, #1565C0 55%, #00897B 55%, #00897B 100%); border-radius:2px;"></div>
+        <div style="display:flex; justify-content:space-between; padding:0 7%; position:relative;">
+          <div style="text-align:center;">
+            <div style="width:20px; height:20px; border-radius:50%; background:#1565C0; border:3px solid white; box-shadow:0 0 0 2px #1565C0; margin:0 auto 8px;"></div>
+            <div style="font-size:0.69rem; font-weight:700; color:var(--text);">BSc</div>
+            <div style="font-size:0.61rem; color:var(--text-muted);">2008 – 2012</div>
+            <div style="font-size:0.61rem; color:#E65100; font-weight:600; margin-top:2px;">🥇 1st Place</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:20px; height:20px; border-radius:50%; background:#1565C0; border:3px solid white; box-shadow:0 0 0 2px #1565C0; margin:0 auto 8px;"></div>
+            <div style="font-size:0.69rem; font-weight:700; color:var(--text);">MSc</div>
+            <div style="font-size:0.61rem; color:var(--text-muted);">2013 – 2015</div>
+            <div style="font-size:0.61rem; color:#E65100; font-weight:600; margin-top:2px;">🎖️ Top 5%</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:24px; height:24px; border-radius:50%; background:#00897B; border:3px solid white; box-shadow:0 0 0 2px #00897B; margin:-2px auto 6px;"></div>
+            <div style="font-size:0.69rem; font-weight:700; color:var(--text);">PhD starts</div>
+            <div style="font-size:0.61rem; color:var(--text-muted);">Oct 2022</div>
+            <div style="font-size:0.61rem; color:#00897B; font-weight:600; margin-top:2px;">🏛 ERBE + 🌊 MaREI</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="width:20px; height:20px; border-radius:50%; background:white; border:3px solid #00897B; box-shadow:0 0 0 2px #00897B; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-size:0.6rem;">★</div>
+            <div style="font-size:0.69rem; font-weight:700; color:var(--text-muted);">PhD ✓</div>
+            <div style="font-size:0.61rem; color:var(--text-muted);">Apr 2027 (exp.)</div>
+            <div style="font-size:0.61rem; color:var(--text-muted); margin-top:2px;">UCC 🎓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">PhD — UCC (2022–Present)</div>
+
+    <div class="award-item">
+      <div class="award-icon">🏛️</div>
+      <div>
+        <div class="award-title">ERBE CDT Fellowship — Energy Research and Built Environment</div>
+        <div class="award-body">Competitively awarded a fully-funded PhD fellowship through the SFI/EPSRC Centre for Doctoral Training in Energy Research and the Built Environment (ERBE CDT). The fellowship covers full tuition and living stipend for the duration of the PhD, recognising research potential in energy systems and the built environment.</div>
+        <div class="award-meta">📍 University College Cork · Oct 2022 – Present · Full doctoral funding</div>
+      </div>
+    </div>
+
+    <div class="award-item">
+      <div class="award-icon">🌊</div>
+      <div>
+        <div class="award-title">MaREI Centre Scholarship — Marine and Renewable Energy Ireland</div>
+        <div class="award-body">Awarded a research scholarship by MaREI, the SFI Research Centre for Energy, Climate and Marine. The scholarship supports research on demand-side flexibility, residential battery synchronisation, and early-warning methods for distribution system operators under high renewable penetration — directly contributing to Ireland's national energy transition goals.</div>
+        <div class="award-meta">📍 MaREI Research Centre · University College Cork · Oct 2022 – Present</div>
+      </div>
+    </div>
+
+    <div class="section-label">Academic Excellence</div>
+
+    <div class="award-item">
+      <div class="award-icon">🏅</div>
+      <div>
+        <div class="award-title">Member — DAHAD Brilliant Talent Guidance Office</div>
+        <div class="award-body">Selected as a member of DAHAD (Daftar Hemayat az Estedad-haye Darakhshan), the national brilliant talent guidance office at Bu-Ali Sina University, recognising academic excellence in electrical engineering.</div>
+        <div class="award-meta">📍 Bu-Ali Sina University · May 2010</div>
+      </div>
+    </div>
+
+    <div class="award-item">
+      <div class="award-icon">🥇</div>
+      <div>
+        <div class="award-title">1st Place — BSc Cohort, Electrical Engineering</div>
+        <div class="award-body">Graduated first in cohort with a GPA of 19/20 from the Electrical &amp; Power Engineering programme at Bu-Ali Sina University, Hamedan, Iran.</div>
+        <div class="award-meta">📍 Bu-Ali Sina University · Sep 2012</div>
+      </div>
+    </div>
+
+    <div class="award-item">
+      <div class="award-icon">🏆</div>
+      <div>
+        <div class="award-title">17th Nationally — Iran Electrical Engineering Olympiad</div>
+        <div class="award-body">Ranked 17th nationwide in Iran's national Electrical Engineering Olympiad among top undergraduate students across all universities in the country.</div>
+        <div class="award-meta">📍 National (Iran) · 2012</div>
+      </div>
+    </div>
+
+    <div class="award-item">
+      <div class="award-icon">🎖️</div>
+      <div>
+        <div class="award-title">Top 5% — MSc Cohort, Shahid Beheshti University</div>
+        <div class="award-body">Ranked in the top 5% of the MSc Nuclear Engineering cohort at Shahid Beheshti University, Tehran, achieving a GPA of 18.25/20.</div>
+        <div class="award-meta">📍 Shahid Beheshti University · 2015</div>
+      </div>
+    </div>
+
+    <div class="award-item">
+      <div class="award-icon">📗</div>
+      <div>
+        <div class="award-title">Published Author — Engineering Electromagnetics Textbook (Persian)</div>
+        <div class="award-body">Authored the Persian-language <em>Engineering Electromagnetics</em> textbook (and several other technical volumes in Persian), adopted for undergraduate and postgraduate courses in Iran.</div>
+        <div class="award-meta">📍 Published during MSc · ~2014–2015</div>
+      </div>
+    </div>
+
+    <div class="award-item">
+      <div class="award-icon">📝</div>
+      <div>
+        <div class="award-title">Official Exam Author — Iran National PhD Entrance Exam (Sanjesh)</div>
+        <div class="award-body">Authored and submitted official electromagnetics questions for Iran's national PhD entrance exam (electrical engineering — field &amp; communications track) to the National Organisation for Educational Testing (Sanjesh).</div>
+        <div class="award-meta">📍 National (Iran) · ~2014</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ TEACHING ══ -->
+<div id="teaching-view" class="view">
+  <div class="container">
+    <div class="page-header"><div class="page-title">🎓 Teaching &amp; Workshops</div></div>
+
+    <div class="section-label">University-Level Teaching</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Lecturer — Electrical Engineering (Multiple Courses)</div>
+          <div class="tl-org">Technical &amp; Vocational University (TVU) · Hamedan, Iran</div>
+          <div class="tl-date">2014 – 2017 · Part-time · Several semesters</div>
+          <ul class="tl-bullets">
+            <li>Engineering Electromagnetics</li>
+            <li>Engineering Mathematics</li>
+            <li>Electric Machines 1 &amp; 2</li>
+            <li>Linear Control &amp; Linear Control Laboratory</li>
+            <li>Electric Circuits 1 &amp; 2</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Lecturer — Engineering Electromagnetics</div>
+          <div class="tl-org">Parshe Educational Institute · Iran</div>
+          <div class="tl-date">~2013 – 2015</div>
+          <ul class="tl-bullets">
+            <li>Delivered structured exam-preparation courses for Engineering Electromagnetics.</li>
+            <li>Managed the design and production of mock-examination question banks.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Mobile Technology Instructor</div>
+          <div class="tl-org">Private Technical Institutes · Iran</div>
+          <div class="tl-date">2016 – 2018 · 2 years</div>
+          <ul class="tl-bullets">
+            <li>Delivered professional training courses in Android and iOS mobile hardware/software repair.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Teaching Assistantships</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Teaching Assistant — PhD</div>
+          <div class="tl-org">University College Cork · Cork, Ireland</div>
+          <div class="tl-date">2022 – Present</div>
+          <ul class="tl-bullets">
+            <li>Support for undergraduate and postgraduate students on power system analysis and energy modelling projects.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Teaching Assistant — Engineering Electromagnetics</div>
+          <div class="tl-org">Shahid Beheshti University · Tehran, Iran</div>
+          <div class="tl-date">MSc period · 1 semester</div>
+          <ul class="tl-bullets">
+            <li>Led tutorial sessions and graded assignments for the postgraduate Engineering Electromagnetics course.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Teaching Assistant — Multiple Courses</div>
+          <div class="tl-org">Bu-Ali Sina University · Hamedan, Iran</div>
+          <div class="tl-date">BSc period · 7 semesters</div>
+          <ul class="tl-bullets">
+            <li>Electromagnetics, Linear Control, Engineering Mathematics, and related core courses.</li>
+            <li>Ran tutorial sessions, marked coursework, and supported lab demonstrations for over 7 consecutive semesters.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Workshops &amp; Guest Lectures</div>
+    <div style="background:var(--surface); border:2px dashed var(--border); border-radius:12px; padding:1.5rem; text-align:center; color:var(--text-muted);">
+      <span style="font-size:1.5rem; display:block; margin-bottom:6px; opacity:0.4;">🎤</span>
+      <span style="font-size:0.84rem;">Conference workshops, PhD tutorials, UCC guest lectures — let me know and I'll add them here.</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ CONTACT ══ -->
+<div id="contact-view" class="view">
+  <div class="container">
+    <div class="page-header"><div class="page-title">✉️ Contact</div></div>
+    <div class="contact-wrapper">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="cc-icon">✉️</div>
+          <div>
+            <div class="cc-label">Email (UCC)</div>
+            <div class="cc-value"><a href="mailto:jalal.faraji@ucc.ie">jalal.faraji@ucc.ie</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">✉️</div>
+          <div>
+            <div class="cc-label">Email (Personal)</div>
+            <div class="cc-value"><a href="mailto:jalalfaraji1988@gmail.com">jalalfaraji1988@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">📍</div>
+          <div>
+            <div class="cc-label">Location</div>
+            <div class="cc-value">Cork, Ireland</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">🏛️</div>
+          <div>
+            <div class="cc-label">Institution</div>
+            <div class="cc-value">UCC · MaREI Centre</div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">🔗</div>
+          <div>
+            <div class="cc-label">LinkedIn</div>
+            <div class="cc-value"><a href="https://www.linkedin.com/in/jalal-faraji" target="_blank">jalal-faraji ↗</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">📚</div>
+          <div>
+            <div class="cc-label">Google Scholar</div>
+            <div class="cc-value"><a href="https://scholar.google.com/citations?user=xF0SwTIAAAAJ" target="_blank">View publications ↗</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">💻</div>
+          <div>
+            <div class="cc-label">GitHub</div>
+            <div class="cc-value"><a href="https://github.com/JalalFaraji" target="_blank">JalalFaraji ↗</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">🌊</div>
+          <div>
+            <div class="cc-label">MaREI Profile</div>
+            <div class="cc-value"><a href="https://www.marei.ie/people/jalal-faraji/" target="_blank">marei.ie ↗</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="cc-icon">🎓</div>
+          <div>
+            <div class="cc-label">ERBE CDT</div>
+            <div class="cc-value"><a href="https://erbecdt.ac.uk/people/profiles/?smid=1321" target="_blank">erbecdt.ac.uk ↗</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL OVERLAY ═══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-category" id="modal-category">Research Concept</div>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  /* ═══ INTEREST DATA ═══ */
+  const INTEREST_DATA = {
+    'Demand Response': {
+      category: 'Energy Systems',
+      body: `<p><strong>Demand Response (DR)</strong> refers to changes in electricity usage by end-use customers from their normal consumption patterns in response to changes in the price of electricity over time, or to incentive payments designed to induce lower electricity use at times of high wholesale market prices or when grid reliability is jeopardised.</p>
+      <p>Unlike supply-side management (turning generators on or off), DR treats <strong>loads as a controllable resource</strong>. When a system operator signals a DR event — via price, direct signal, or automated dispatch — participating customers (or their smart devices) curtail or shift consumption: HVAC setpoints rise, washing machines pause, EV charging delays.</p>
+      <p>Key metrics include: <span class="kw">load reduction magnitude</span> <span class="kw">response latency</span> <span class="kw">duration</span> <span class="kw">rebound effect</span>. The <em>rebound</em> — the surge in consumption immediately after a DR event ends — is the core problem Jalal's PhD addresses.</p>
+      <div class="ref">J. Faraji et al., "Chaos-Theoretic Characterisation of Post-DR HVAC Rebound," IEEE Transactions on Smart Grid, 2026.</div>`
+    },
+    'Demand-Side Flexibility': {
+      category: 'Energy Systems',
+      body: `<p><strong>Demand-Side Flexibility (DSF)</strong> is the broader capability of electricity consumers to adjust their power consumption in time, quantity, or location in response to system needs. It encompasses Demand Response but also includes storage dispatch, prosumer exports, and time-of-use shifting.</p>
+      <p>In a grid with high renewable penetration, the supply curve is <strong>volatile and weather-driven</strong>. Flexibility from the demand side is essential to maintain frequency stability and avoid expensive peaker plant activations. Aggregated DSF can substitute for spinning reserve or fast-frequency response.</p>
+      <p>Key challenges: <span class="kw">aggregation across diverse assets</span> <span class="kw">comfort constraints</span> <span class="kw">privacy</span> <span class="kw">synchronisation risk</span>. The last — many devices responding identically and simultaneously — creates new instabilities that Jalal's research characterises through chaos theory.</p>`
+    },
+    'Smart Grids': {
+      category: 'Power Systems',
+      body: `<p>A <strong>Smart Grid</strong> is an electricity network that uses digital communications technology to detect and react to local changes in usage, integrating distributed intelligence across generation, transmission, distribution, and consumption.</p>
+      <p>Core enabling technologies include: <span class="kw">Advanced Metering Infrastructure (AMI)</span> <span class="kw">SCADA & EMS</span> <span class="kw">real-time sensing (PMUs)</span> <span class="kw">distributed automation</span> <span class="kw">two-way communication</span>. The smart grid transforms the passive consumer into an active <em>prosumer</em> who both produces and consumes.</p>
+      <p>Ireland's grid (operated by EirGrid and ESB Networks) is undergoing rapid smartification to accommodate 70%+ renewable electricity by 2030, creating urgent demand for researchers and engineers who understand the nonlinear dynamics that emerge at scale.</p>`
+    },
+    'Net-Load Forecasting': {
+      category: 'Machine Learning / Forecasting',
+      body: `<p><strong>Net Load</strong> is the residual demand that the conventional (dispatchable) generation must meet after subtracting variable renewable generation: <em>Net Load = Total Load − Renewable Output</em>. As solar PV and wind grow, net load becomes the operationally critical signal.</p>
+      <p>Forecasting net load is harder than forecasting load alone because it inherits the <strong>uncertainty of both demand and renewable generation</strong>, compounded by prosumer behaviour. Jalal's forecasting model — a hybrid <span class="kw">CNN–BiLSTM</span> with <span class="kw">Monte Carlo Dropout</span> and <span class="kw">Kernel Density Estimation</span> — produces probabilistic forecasts that quantify uncertainty in both tails, essential for DSO planning.</p>
+      <p>Peak-aware training ensures the model captures rare but high-impact demand spikes rather than averaging them away.</p>`
+    },
+    'Nonlinear Dynamics': {
+      category: 'Mathematics / Physics',
+      body: `<p><strong>Nonlinear Dynamics</strong> is the study of systems governed by equations where outputs are not proportional to inputs. Such systems can exhibit <em>chaos</em>, <em>bifurcations</em>, <em>limit cycles</em>, and <em>strange attractors</em> — behaviours qualitatively impossible in linear systems.</p>
+      <p>Key tools Jalal uses: <span class="kw">Lyapunov Exponents</span> (quantify sensitivity to initial conditions; positive → chaos), <span class="kw">Recurrence Quantification Analysis (RQA)</span> (detect state-space structure from time series), <span class="kw">0-1 Test for Chaos</span>, <span class="kw">Sample Entropy</span>.</p>
+      <p>The insight driving Jalal's PhD: aggregated HVAC systems after a Demand Response event behave as a <strong>transiently chaotic dynamical system</strong> — the rebound is not noise, but deterministic chaos with measurable structure. This has profound implications for how DSOs should model and forecast post-DR loads.</p>
+      <div class="ref">Strogatz, S. H. (2018). Nonlinear Dynamics and Chaos (2nd ed.). CRC Press.</div>`
+    },
+    'Battery Storage': {
+      category: 'Energy Storage',
+      body: `<p><strong>Battery Energy Storage Systems (BESS)</strong> convert electrical energy to chemical energy and back, enabling time-shifting of electricity supply and demand. At the residential scale, lithium-ion batteries (typically 5–15 kWh) can store solar surplus, reduce grid draw during peaks, and participate in flexibility markets.</p>
+      <p>Jalal's research focuses on a unique risk: when many households with batteries respond to the same price signal or tariff structure, their charging cycles <strong>synchronise</strong>, creating aggregate demand spikes that are collectively larger and sharper than any individual battery's contribution. The StoreNet trial in Dingle, Co. Kerry provides the empirical evidence.</p>
+      <p>Key metrics: <span class="kw">state of charge (SoC)</span> <span class="kw">round-trip efficiency</span> <span class="kw">cycle degradation</span> <span class="kw">peak coincidence factor</span>.</p>`
+    },
+    'Renewable Integration': {
+      category: 'Power Systems',
+      body: `<p><strong>Renewable Integration</strong> refers to the technical, operational, and market challenges of incorporating large shares of variable renewable energy (wind, solar PV) into power systems originally designed for dispatchable, controllable generation.</p>
+      <p>Key challenges: <span class="kw">frequency regulation</span> (renewables have no inertia), <span class="kw">voltage stability</span> (distributed generation on distribution networks), <span class="kw">curtailment</span> (excess generation that cannot be absorbed), <span class="kw">ramping requirements</span> (duck curve), and <span class="kw">adequacy</span> (can the system meet peak demand on a calm, cloudy day?).</p>
+      <p>Ireland is a world-leading test case: an island grid targeting 80% renewable electricity, with wind already supplying over 40% of annual generation. This makes flexibility — including demand-side flexibility — a first-order engineering problem.</p>`
+    },
+    'Solar PV Systems': {
+      category: 'Renewable Energy',
+      body: `<p><strong>Photovoltaic (PV) systems</strong> convert sunlight directly into electricity via the photovoltaic effect. A key operational challenge is <strong>Maximum Power Point Tracking (MPPT)</strong>: the I-V curve of a PV module has a single peak under uniform irradiance, but under <em>partial shading</em> (clouds, obstructions), multiple local maxima appear, trapping naive controllers at suboptimal points.</p>
+      <p>Jalal's pre-PhD work developed two novel MPPT algorithms: a <span class="kw">Modified Bat Algorithm</span> (metaheuristic, global search) and a <span class="kw">Following Optimisation Algorithm (FOA)</span>, both able to find the <em>global</em> maximum in partially shaded conditions. He also designed a dual-axis solar tracker combining <span class="kw">Perturb & Observe</span> with an <span class="kw">MLP neural network</span> for accurate sun-position estimation.</p>
+      <div class="ref">J. Faraji et al., "A Modified Bat Algorithm to Track Global MPPT in PV Arrays," Int. Trans. Electrical Energy Systems, 2019.</div>`
+    }
+  };
+
+  /* ═══ PROJECT DATA ═══ */
+  const PROJECT_DATA = {
+    netload: {
+      category: 'PhD Research · UCC / MaREI',
+      title: 'Community Net-Load Forecasting with Uncertainty Quantification',
+      body: `<p><strong>Challenge:</strong> At community scale (~100 households), net load — total demand minus rooftop solar — is volatile and hard to forecast because it inherits uncertainty from both consumption behaviour and weather-driven PV output.</p>
+      <p><strong>What was built:</strong> A hybrid deep-learning architecture combining <span class="kw">1D-CNN</span> (local pattern extraction) → <span class="kw">Bidirectional LSTM</span> (temporal context in both directions) → <span class="kw">Monte Carlo Dropout</span> (epistemic uncertainty) with <span class="kw">Kernel Density Estimation</span> post-processing to generate calibrated probabilistic forecasts.</p>
+      <p><strong>Key innovation:</strong> A peak-aware training objective that up-weights rare high-demand events, preventing the model from averaging them away. This is critical for DSOs who care most about tail events.</p>
+      <p><strong>Dataset:</strong> Pecan Street Dataport (Austin, Texas) — 1-min resolution smart meter data for 232 households.</p>
+      <div class="modal-tags"><span class="tag tag-blue">Python</span><span class="tag tag-green">PyTorch</span><span class="tag tag-orange">Time Series</span><span class="tag tag-blue">Probabilistic Forecasting</span></div>`
+    },
+    chaos: {
+      category: 'PhD Research · IEEE TSG 2026',
+      title: 'Chaos-Theoretic Characterisation of Post-DR Rebound in HVAC Systems',
+      body: `<p><strong>The problem:</strong> After a Demand Response event, HVAC systems simultaneously resume operation, creating a rebound load surge. Prior literature modelled this as noise or a simple step — but is it?</p>
+      <p><strong>The finding:</strong> Aggregated HVAC rebound dynamics are <em>transiently chaotic</em>. Using <span class="kw">Lyapunov Exponent estimation</span>, <span class="kw">0-1 Test for Chaos</span>, <span class="kw">Sample Entropy</span>, and <span class="kw">Recurrence Quantification Analysis (RQA)</span>, Jalal demonstrated that the rebound exhibits positive Lyapunov exponents and recurrence patterns consistent with deterministic chaos, not stochastic noise.</p>
+      <p><strong>Why it matters:</strong> Chaotic systems are fundamentally unpredictable beyond a finite horizon, but their structure is not random — it can be characterised, exploited for early warning, and accounted for in grid planning models.</p>
+      <p><strong>Published:</strong> IEEE Transactions on Smart Grid, 2026.</p>
+      <div class="modal-tags"><span class="tag tag-blue">Chaos Theory</span><span class="tag tag-green">Python</span><span class="tag tag-orange">IEEE TSG</span><span class="tag tag-blue">Lyapunov Exponents</span><span class="tag tag-green">RQA</span></div>`
+    },
+    storenet: {
+      category: 'PhD Research · CIRED 2027',
+      title: 'Early Warning of Synchronised Battery Charging Peaks',
+      body: `<p><strong>The problem:</strong> When many households with residential batteries respond to the same time-of-use tariff, their charging cycles synchronise — creating aggregate demand peaks far larger than expected from individual behaviour. This is an emerging threat for DSOs as battery adoption accelerates.</p>
+      <p><strong>The dataset:</strong> StoreNet — a real residential battery trial in Dingle, Co. Kerry, Ireland — provides high-resolution data from 19 households with Sonnen batteries, capturing empirical synchronisation events.</p>
+      <p><strong>The framework:</strong> An early-warning system using <span class="kw">recurrence-based indicators</span> and <span class="kw">nonlinear time-series metrics</span> to detect rising coherence among household SoC profiles before a synchronised peak materialises — giving the DSO actionable lead time.</p>
+      <p><strong>Target:</strong> CIRED 2027 (International Conference on Electricity Distribution).</p>
+      <div class="modal-tags"><span class="tag tag-blue">Battery Storage</span><span class="tag tag-green">DSO Grid Planning</span><span class="tag tag-orange">CIRED 2027</span><span class="tag tag-blue">Early Warning</span></div>`
+    },
+    tracker: {
+      category: 'Pre-PhD · IEEE EEEIC 2020 · 9 citations',
+      title: 'Dual-Axis Solar Tracker — P&O MPPT + Neural Network',
+      body: `<p><strong>Motivation:</strong> Fixed-tilt PV installations lose 20–35% of potential annual energy compared to sun-tracking systems. Existing trackers either use astronomical equations (accurate but computationally heavy) or simple light sensors (fast but inaccurate under clouds).</p>
+      <p><strong>What was built:</strong> A dual-axis tracker combining two control layers: a <span class="kw">modified Perturb & Observe (P&O) MPPT</span> algorithm for fast electrical-domain optimisation, and a <span class="kw">Multi-Layer Perceptron (MLP)</span> neural network trained on astronomical and meteorological data for precise mechanical positioning.</p>
+      <p><strong>Results:</strong> The hybrid system achieved faster convergence to MPP and higher annual energy yield compared to single-axis and fixed-tilt baselines. Published at IEEE EEEIC 2020; 9 citations to date.</p>
+      <div class="modal-tags"><span class="tag tag-blue">Solar PV</span><span class="tag tag-green">Neural Network</span><span class="tag tag-orange">IEEE EEEIC 2020</span><span class="tag tag-blue">MPPT</span></div>`
+    },
+    gmppt: {
+      category: 'Pre-PhD · ITES 2021 · 5 citations',
+      title: 'Global MPPT for Partially Shaded PV Arrays — Following Optimisation Algorithm',
+      body: `<p><strong>The partial shading problem:</strong> When a PV array is partially shaded (by clouds, trees, or adjacent panels), the I-V characteristic develops multiple power peaks — local maxima that trap conventional P&O controllers, costing up to 70% of available power.</p>
+      <p><strong>Novel algorithm:</strong> The <span class="kw">Following Optimisation Algorithm (FOA)</span> — a bio-inspired metaheuristic that explores the full voltage space to locate the global maximum power point, regardless of the number of local peaks. It achieves faster convergence and higher tracking efficiency than standard Particle Swarm Optimisation (PSO) and Genetic Algorithms (GA) in benchmarks.</p>
+      <p><strong>Validated</strong> on MATLAB/Simulink with hardware-in-the-loop testing. Published in International Transactions on Electrical Energy Systems, 2021.</p>
+      <div class="modal-tags"><span class="tag tag-blue">GMPPT</span><span class="tag tag-green">Metaheuristic</span><span class="tag tag-orange">MATLAB/Simulink</span><span class="tag tag-blue">Partial Shading</span></div>`
+    },
+    ev: {
+      category: 'BSc Thesis · Bu-Ali Sina University · 2011–2012',
+      title: 'Optimal EV Charging Station Placement in a Real Distribution Network',
+      body: `<p><strong>Context:</strong> Early-stage EV adoption in Iran prompted research into the infrastructure planning challenge: where and how large should charging stations be to minimise grid impact while maximising accessibility?</p>
+      <p><strong>Methodology:</strong> Applied <span class="kw">power flow analysis</span> (Newton-Raphson) on a real Iranian distribution feeder to evaluate candidate station locations. Modelled <span class="kw">V2G (Vehicle-to-Grid)</span> bidirectional charging, fault impact analysis, voltage profile degradation, and load balancing across feeders.</p>
+      <p><strong>Outcome:</strong> Recommended optimal siting and sizing for a phased charging network deployment, minimising voltage deviation and transformer loading while accounting for spatial demand patterns.</p>
+      <div class="modal-tags"><span class="tag tag-blue">EV / V2G</span><span class="tag tag-green">Distribution Networks</span><span class="tag tag-orange">BSc Thesis</span><span class="tag tag-blue">Power Flow</span></div>`
+    },
+    smartcity: {
+      category: 'NRI Research · 2013–2016',
+      title: 'Smart Energy City — NRI Innovation & Smart City Research Centre',
+      body: `<p><strong>Role:</strong> Led the establishment of NRI's Smart City Research Centre and directed a portfolio of national smart-grid feasibility studies for Iran's Ministry of Energy.</p>
+      <p><strong>Pilot smart campus:</strong> Designed and partially implemented a smart energy campus at the NRI headquarters — integrating smart metering, demand monitoring, and local generation to demonstrate smart-grid concepts at scale.</p>
+      <p><strong>National studies:</strong> Directed feasibility and design studies for <span class="kw">Hormuz Island smart energy network</span>, <span class="kw">smart hospital</span>, <span class="kw">smart residential complex</span>, <span class="kw">smart university campus</span>, and <span class="kw">smart energy park</span> — covering grid topology, DER integration, smart metering, and demand management.</p>
+      <div class="modal-tags"><span class="tag tag-blue">Smart Grid</span><span class="tag tag-green">Smart City</span><span class="tag tag-orange">Energy Policy</span><span class="tag tag-blue">Feasibility Studies</span></div>`
+    },
+    dgmodel: {
+      category: 'MSc Thesis · Shahid Beheshti University · 2013–2015',
+      title: 'Dynamic Modelling of DG Equipment for Near-Zero-Energy Buildings',
+      body: `<p><strong>Motivation:</strong> Near-Zero-Energy Buildings (NZEBs) integrate multiple distributed generation (DG) technologies — PV panels, micro-CHP, fuel cells, small wind — with complex interactions that steady-state models cannot capture.</p>
+      <p><strong>Contribution:</strong> Developed <span class="kw">dynamic MATLAB/Simulink models</span> for key DG components (PV, micro-CHP, battery storage) capturing transient behaviour during load changes, grid disturbances, and islanding transitions.</p>
+      <p><strong>Energy management:</strong> Designed and simulated rule-based and optimisation-based energy management strategies for grid-integrated residential DG systems, evaluating self-sufficiency ratio, grid export profile, and peak import reduction.</p>
+      <div class="modal-tags"><span class="tag tag-blue">MATLAB/Simulink</span><span class="tag tag-green">Distributed Generation</span><span class="tag tag-orange">MSc Thesis</span><span class="tag tag-blue">Dynamic Modelling</span></div>`
+    }
+  };
+
+  /* ═══ MODAL FUNCTIONS ═══ */
+  function openInterest(name) {
+    const data = INTEREST_DATA[name];
+    if (!data) return;
+    document.getElementById('modal-category').textContent = data.category;
+    document.getElementById('modal-title').textContent = name;
+    document.getElementById('modal-body').innerHTML = data.body;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openProject(id) {
+    const data = PROJECT_DATA[id];
+    if (!data) return;
+    document.getElementById('modal-category').textContent = data.category;
+    document.getElementById('modal-title').textContent = data.title;
+    document.getElementById('modal-body').innerHTML = data.body;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function show(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id + '-view').classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if (b.getAttribute('onclick') === "show('" + id + "')") b.classList.add('active');
+    });
+    window.scrollTo(0, 0);
+  }
+  function showTab(id) {
+    document.querySelectorAll('.rtab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.rtab').forEach(b => b.classList.remove('active'));
+    document.getElementById(id + '-panel').classList.add('active');
+    event.target.classList.add('active');
+  }
+  function filterPubs(type, btn) {
+    document.querySelectorAll('.pfbtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.pub-card').forEach(c => {
+      c.style.display = (type === 'all' || c.dataset.type === type) ? 'block' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
