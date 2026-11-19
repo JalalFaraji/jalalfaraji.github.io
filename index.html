@@ -64,8 +64,20 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 3rem; font-weight: 700; flex-shrink: 0; color: white;
     overflow: hidden;
+    position: relative; cursor: pointer;
+    transition: border-color 0.2s;
   }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar:hover { border-color: rgba(255,255,255,0.85); }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .avatar-hint {
+    display: none;
+    position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.65); color: white;
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 0.6rem; white-space: nowrap; pointer-events: none;
+    font-weight: 400;
+  }
+  .avatar:hover .avatar-hint { display: block; }
   .hero-name { font-size: 2rem; font-weight: 700; margin-bottom: 5px; }
   .hero-role { font-size: 0.95rem; opacity: 0.8; margin-bottom: 3px; }
   .hero-affil { font-size: 0.85rem; opacity: 0.65; margin-bottom: 1.2rem; }
@@ -278,7 +290,7 @@
 <div id="home-view" class="view active">
   <div style="min-height:calc(100vh - 56px); display:flex; align-items:center; padding: 2rem;">
     <div class="hero-card" style="margin: 0 auto;">
-      <div class="avatar">JF</div>
+      <div class="avatar" id="avatar-circle">JF<span class="avatar-hint">📷 Upload photo</span></div>
       <div>
         <div class="hero-name">Jalal Faraji</div>
         <div class="hero-role">PhD Researcher · Power Systems &amp; Demand-Side Flexibility</div>
@@ -355,7 +367,7 @@
       <div class="edu-card">
         <div class="edu-icon">🎓</div>
         <div style="flex:1">
-          <div class="edu-degree">MSc in Nuclear Engineering</div>
+          <div class="edu-degree">MSc in Niroo Engineering</div>
           <div class="edu-uni">Shahid Beheshti University · Tehran, Iran</div>
           <div class="edu-meta">2013 – 2015 · GPA: 18.25 / 20 · Top 5% of cohort</div>
           <div class="edu-desc">
@@ -417,7 +429,7 @@
           <div class="tl-card">
             <div class="tl-role">Research &amp; Development Engineer — OT / ICS</div>
             <div class="tl-org">Niroo Research Institute (NRI) · Tehran, Iran</div>
-            <div class="tl-date">2016 – 2022 · 6 years</div>
+            <div class="tl-date">2013 – Dec 2015 · ~3 years</div>
             <ul class="tl-bullets">
               <li>Delivered SCADA-based data acquisition and remote monitoring for distributed energy assets on the NRI campus; configured historian servers, RTUs, and HMI interfaces.</li>
               <li>Specified and procured ICS/OT equipment — PLCs (Siemens S7), sensor networks, and SCADA software — for three smart-infrastructure projects over a 6-year period.</li>
@@ -858,7 +870,7 @@
       <div class="award-icon">🎖️</div>
       <div>
         <div class="award-title">Top 5% — MSc Cohort, Shahid Beheshti University</div>
-        <div class="award-body">Ranked in the top 5% of the MSc Nuclear Engineering cohort at Shahid Beheshti University, Tehran, achieving a GPA of 18.25/20.</div>
+        <div class="award-body">Ranked in the top 5% of the MSc Niroo Engineering cohort at Shahid Beheshti University, Tehran, achieving a GPA of 18.25/20.</div>
         <div class="award-meta">📍 Shahid Beheshti University · 2015</div>
       </div>
     </div>
@@ -1241,6 +1253,48 @@
     });
   }
 </script>
+<!-- avatar photo upload input -->
+<input type="file" id="avatar-upload" accept="image/*" style="display:none">
+
+<script>
+  /* ═══ AVATAR PHOTO UPLOAD ═══ */
+  (function() {
+    var STORAGE_KEY = 'jalal_avatar';
+
+    function setAvatar(src) {
+      var av = document.getElementById('avatar-circle');
+      if (!av) return;
+      av.innerHTML = '<img src="' + src + '" alt="Jalal Faraji"><span class="avatar-hint">📷 Change photo</span>';
+    }
+
+    // Restore saved photo on load
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) setAvatar(saved);
+    } catch(e) {}
+
+    // Click avatar → open file picker
+    var av = document.getElementById('avatar-circle');
+    var input = document.getElementById('avatar-upload');
+    if (av && input) {
+      av.addEventListener('click', function() { input.click(); });
+      input.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          var dataUrl = ev.target.result;
+          try { localStorage.setItem(STORAGE_KEY, dataUrl); } catch(err) {}
+          setAvatar(dataUrl);
+        };
+        reader.readAsDataURL(file);
+        // reset so same file can be re-picked
+        input.value = '';
+      });
+    }
+  })();
+</script>
+
 <!-- scroll hint -->
 <div id="scroll-hint" style="
   position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
