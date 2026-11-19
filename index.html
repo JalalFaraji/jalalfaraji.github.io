@@ -69,15 +69,7 @@
   }
   .avatar:hover { border-color: rgba(255,255,255,0.85); }
   .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .avatar-hint {
-    display: none;
-    position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,0.65); color: white;
-    padding: 3px 10px; border-radius: 12px;
-    font-size: 0.6rem; white-space: nowrap; pointer-events: none;
-    font-weight: 400;
-  }
-  .avatar:hover .avatar-hint { display: block; }
+  /* avatar-hint removed — using native title tooltip instead */
   .hero-name { font-size: 2rem; font-weight: 700; margin-bottom: 5px; }
   .hero-role { font-size: 0.95rem; opacity: 0.8; margin-bottom: 3px; }
   .hero-affil { font-size: 0.85rem; opacity: 0.65; margin-bottom: 1.2rem; }
@@ -290,7 +282,7 @@
 <div id="home-view" class="view active">
   <div style="min-height:calc(100vh - 56px); display:flex; align-items:center; padding: 2rem;">
     <div class="hero-card" style="margin: 0 auto;">
-      <div class="avatar" id="avatar-circle">JF<span class="avatar-hint">📷 Upload photo</span></div>
+      <label for="avatar-upload" class="avatar" id="avatar-circle" title="Click to upload photo">JF</label>
       <div>
         <div class="hero-name">Jalal Faraji</div>
         <div class="hero-role">PhD Researcher · Power Systems &amp; Demand-Side Flexibility</div>
@@ -1264,20 +1256,19 @@
     function setAvatar(src) {
       var av = document.getElementById('avatar-circle');
       if (!av) return;
-      av.innerHTML = '<img src="' + src + '" alt="Jalal Faraji"><span class="avatar-hint">📷 Change photo</span>';
+      av.innerHTML = '<img src="' + src + '" alt="Jalal Faraji">';
+      av.title = 'Click to change photo';
     }
 
-    // Restore saved photo on load
+    // Restore saved photo on page load
     try {
       var saved = localStorage.getItem(STORAGE_KEY);
       if (saved) setAvatar(saved);
     } catch(e) {}
 
-    // Click avatar → open file picker
-    var av = document.getElementById('avatar-circle');
+    // File input → read as base64 → save to localStorage → show in avatar
     var input = document.getElementById('avatar-upload');
-    if (av && input) {
-      av.addEventListener('click', function() { input.click(); });
+    if (input) {
       input.addEventListener('change', function(e) {
         var file = e.target.files[0];
         if (!file) return;
@@ -1288,8 +1279,7 @@
           setAvatar(dataUrl);
         };
         reader.readAsDataURL(file);
-        // reset so same file can be re-picked
-        input.value = '';
+        input.value = ''; // reset so same file can be picked again
       });
     }
   })();
