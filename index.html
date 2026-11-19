@@ -99,7 +99,8 @@
 
   /* VIEWS */
   .view { display: none; min-height: calc(100vh - var(--nav-height)); padding: 2.5rem 0; }
-  .view.active { display: block; }
+  .view.active { display: block; animation: sectionIn 0.28s ease both; }
+  @keyframes sectionIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   .container { max-width: 920px; margin: 0 auto; padding: 0 2rem; }
   .page-header { margin-bottom: 2rem; }
   .page-title {
@@ -1224,7 +1225,7 @@
     document.querySelectorAll('.nav-btn').forEach(b => {
       if (b.getAttribute('onclick') === "show('" + id + "')") b.classList.add('active');
     });
-    window.scrollTo(0, 0);
+    document.getElementById(id + '-view').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function showTab(id) {
     document.querySelectorAll('.rtab-panel').forEach(p => p.classList.remove('active'));
@@ -1239,6 +1240,43 @@
       c.style.display = (type === 'all' || c.dataset.type === type) ? 'block' : 'none';
     });
   }
+</script>
+<!-- scroll hint -->
+<div id="scroll-hint" style="
+  position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+  background:rgba(21,101,192,0.88); color:white; padding:7px 18px 7px 14px;
+  border-radius:30px; font-size:0.78rem; font-weight:500; display:flex;
+  align-items:center; gap:7px; pointer-events:none;
+  opacity:0; transition:opacity 0.4s; z-index:200; white-space:nowrap;
+  box-shadow:0 4px 16px rgba(0,0,0,0.25);">
+  <span style="font-size:1rem; animation:bounce 1s infinite alternate">↓</span>
+  Scroll to see content
+</div>
+<style>
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(4px); } }
+</style>
+<script>
+  (function(){
+    var hint = document.getElementById('scroll-hint');
+    var timer;
+    // override show() to also trigger the hint when page has scroll room
+    var _orig = show;
+    window.show = function(id) {
+      _orig(id);
+      clearTimeout(timer);
+      // small delay so layout settles after show()
+      setTimeout(function(){
+        var view = document.getElementById(id + '-view');
+        if (!view) return;
+        var rect = view.getBoundingClientRect();
+        // if bottom of section is below viewport bottom → hint
+        if (rect.bottom > window.innerHeight + 10) {
+          hint.style.opacity = '1';
+          timer = setTimeout(function(){ hint.style.opacity = '0'; }, 2800);
+        }
+      }, 120);
+    };
+  })();
 </script>
 </body>
 </html>
